@@ -13,13 +13,12 @@ def get_track_extras(song, artist, album):
     
     r = requests.get("https://itunes.apple.com/search", params=params)
     json_data =  r.json()
-    # print('json_data: ', json_data)
     if json_data["resultCount"] == 1:
         result = json_data["results"][0]
     elif json_data["resultCount"] > 1:
-        pass
+        result = json_data["results"][0]
     else :
-        pass
+        result = ''
 
     artwork_url = result["artworkUrl100"] if result else None
     itunes_url = result["trackViewUrl"] if result else None
@@ -27,41 +26,45 @@ def get_track_extras(song, artist, album):
 
     return (artwork_url, itunes_url, artist_url)
 
-url = "http://127.0.0.1:5000"
-headers = {'Content-Type': 'application/json'}
-
 def post(currentsong):
     data = json.dumps(currentsong)
     r = requests.post(url+'/music/set', data=data, headers=headers)
+    if r.status_code != 200:
+        return r.status_code
+    else :
+        return 'Sent'
 
-    r = requests.get(url+'/music/display')
-    print(r.text)
+url = "http://127.0.0.1:5000"
+headers = {'Content-Type': 'application/json'}
 
-currentsong = json.loads(str(get_current_song()).replace("'''", '"'))
+def main():
+    persistendId = ''
+    prevstatus = ''
+    while True:
+        print('getting data..')
+        currentsong = json.loads(str(get_current_song()).replace("'''", '"'))
 
-if currentsong['status'] == 'playing':
-    (artwork_url, itunes_url, artist_url) = get_track_extras(currentsong['name'], currentsong['artist'], currentsong['album'])
-    currentsong['artwork_url'] = artwork_url
-    currentsong['itunes_url'] = itunes_url
-    currentsong['artist_url'] = artist_url
-    post(currentsong)
-elif currentsong['status'] == 'not playing':
-    print('not playing')
-    post({'status' : 'not playing'})
-elif currentsong['status'] == 'not running':
-    print('not running')
-    post({'status' : 'not running'})
-else:
-    pass
+        if currentsong['status'] == 'playing':
+            if currentsong['persistent ID'] != persistendId:
+                persistendId = currentsong['persistent ID']
+                (currentsong['artwork_url'], currentsong['itunes_url'], currentsong['artist_url']) = get_track_extras(currentsong['name'], currentsong['artist'], currentsong['album'])
+                print(post(currentsong))
+            timets = float(currentsong['duration'].replace(",", "."))-float(currentsong['pPosition'].replace(",", ".")) + 3
+            prevstatus = 'playing'
+        elif currentsong['status'] == 'not playing' and prevstatus != 'not playing':
+            prevstatus = 'not playing'
+            print('not playing')
+            print(post({'status' : 'not playing'}))
+            timets = 5*60
+        elif currentsong['status'] == 'not running' and prevstatus != 'not running':
+            prevstatus = 'not running'
+            print('not running')
+            print(post({'status' : 'not running'}))
+            timets = 5*60
+        else:
+            timets = 5*60
 
-# def main():
-#     while True:
-#         current_song = get_current_song()
-#         if current_song:
-#             print("Currently listening to:", current_song)
-#         else:
-#             print("No music is playing.")
-#         time.sleep(5)  # Check every 5 seconds
+        time.sleep(timets)
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
