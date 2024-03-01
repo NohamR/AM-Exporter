@@ -47,6 +47,7 @@ def main():
         if currentsong['status'] == 'playing':
             if currentsong['persistent ID'] != persistendId:
                 persistendId = currentsong['persistent ID']
+                currentsong['timestamp'] = time.time()
                 (currentsong['artwork_url'], currentsong['itunes_url'], currentsong['artist_url']) = get_track_extras(currentsong['name'], currentsong['artist'], currentsong['album'])
                 print(post(currentsong))
             timets = float(currentsong['duration'].replace(",", "."))-float(currentsong['pPosition'].replace(",", ".")) + 3

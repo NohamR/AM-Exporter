@@ -31,6 +31,11 @@ body * {
   height: 100vh;
 }
 
+.song-url, .artist-url {
+  text-decoration: none;
+  color: inherit;
+}
+
 #player {
   grid-area: B;
   height: fit-content;
@@ -103,19 +108,16 @@ body * {
 .track::after {
   content: '';
   height: 6px;
-  width: 85%;
+  width: var(--new-width);
   display: block;
   background: #D9D9D9;
   border-radius: 10px;
-
-
 }
 
 .time {
   opacity: 0.7;
   font-size: 14px;
   color: gainsboro;
-
   display: flex;
   justify-content: space-between;
   padding-top: 9.6px;
@@ -125,15 +127,9 @@ body * {
   #boxes {
     display: flex;
     flex-direction: column;
-
     max-width: 270px;
     margin: auto;
-
-
     height: auto;
     padding-block: 60px;
   }
-
-
-
 }
