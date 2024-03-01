@@ -13,5 +13,5 @@ json_payload = json.dumps(payload)
 headers = {'Content-Type': 'application/json'}
 
 r = requests.post(url+'/set', data=json_payload, headers=headers)
-r = requests.get(url+'/display')
+r = requests.get(url+'/get')
 print(r.text)
