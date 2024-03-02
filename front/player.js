@@ -20,7 +20,11 @@ function fetchDataAndAnimate() {
             const duration = parseFloat(data.duration);
 
             const titleSongElement = document.querySelector('.title-song');
-            titleSongElement.textContent = name;
+            // titleSongElement.textContent = name;
+            titleSongElement.textContent = `${name} - `
+
+            const titleAlbumElement = document.querySelector('.title-album');
+            titleAlbumElement.textContent = album;
 
             const artistSongElement = document.querySelector('.name-artist');
             artistSongElement.textContent = artist;

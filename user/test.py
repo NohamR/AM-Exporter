@@ -3,6 +3,11 @@ import time
 import json
 import requests
 from pprint import pprint
+import os
+from dotenv import load_dotenv
+load_dotenv()
+USER = os.getenv("USER")
+PASSWORD = os.getenv("PASSWORD")
 
 def get_current_song():
     return subprocess.check_output(['osascript', 'test.applescript']).decode('utf-8').strip()
@@ -15,6 +20,7 @@ def get_track_extras(song, artist, album):
     json_data =  r.json()
     if json_data["resultCount"] == 1:
         result = json_data["results"][0]
+        pprint(result)
     elif json_data["resultCount"] > 1:
         result = json_data["results"][0]
     else :
@@ -23,16 +29,19 @@ def get_track_extras(song, artist, album):
     artwork_url = result["artworkUrl100"] if result else None
     itunes_url = result["trackViewUrl"] if result else None
     artist_url = result["artistViewUrl"] if result else None
+    # album_url = result["collectionViewUrl"] if result else None
 
     return (artwork_url, itunes_url, artist_url)
 
 def post(currentsong):
+    currentsong['user'] = USER
+    currentsong['password'] = PASSWORD
     data = json.dumps(currentsong)
     r = requests.post(url+'/music/set', data=data, headers=headers)
     if r.status_code != 200:
         return r.status_code
     else :
-        return 'Sent'
+        return r.text
 
 url = "http://127.0.0.1:5000"
 headers = {'Content-Type': 'application/json'}

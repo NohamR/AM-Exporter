@@ -1,0 +1,63 @@
+name: applemusicexporter
+services:
+  app:
+    cpu_shares: 90
+    command: []
+    deploy:
+      resources:
+        limits:
+          memory: 7943M
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/Paris
+    image: applemusicexporter
+    labels:
+      icon: https://noh.am/static/assets/music.png
+    ports:
+      - target: 3005
+        published: "3005"
+        protocol: tcp
+    restart: unless-stopped
+    # volumes:
+      # - type: bind
+      #   source: /DATA/AppData/applemusicexporter
+      #   target: /hard
+    x-casaos:
+      envs:
+        - container: PUID
+          description:
+            en_us: for UserID
+        - container: PGID
+          description:
+            en_us: for GroupID
+        - container: TZ
+          description:
+            en_us: specify a timezone to use, see this list.
+    devices: []
+    cap_add: []
+    networks:
+      - default
+    privileged: false
+    container_name: ""
+networks:
+  default:
+    name: applemusicexporter
+x-casaos:
+  architectures:
+    - amd64
+    - arm64
+  author: self
+  category: self
+  hostname: ""
+  icon: https://noh.am/static/assets/music.png
+  index: /
+  main: app
+  port_map: "3005"
+  scheme: http
+  store_app_id: applemusicexporter
+  tagline:
+    en_us: applemusicexporter
+  title:
+    custom: applemusicexporter
+    en_us: applemusicexporter
