@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
+#import hashlib
 
 app = Flask(__name__)
 CORS(app, resources={r"/music/*": {"origins": "http://*"}})
@@ -8,25 +9,24 @@ CORS(app, resources={r"/music/*": {"origins": "http://*"}})
 with open('.users', 'r') as file:
     users = json.load(file)
 
+cache = {}
+
 @app.route('/music/set', methods=['POST'])
 def set_content():
-    global cache
-    cache = request.get_json()
-    if cache['user'] in users and users[cache['user']] == cache['password']:
-        for key in ['user', 'password']:
-            if key in cache:
-                del cache[key]
-        # with open('cache.txt', 'w') as f:
-        #     f.write(str(cache))
+    data = request.get_json()
+    user = data.get('user')
+    password = data.get('password')
+    if data['user'] in users and users[data['user']] == data['password']:
+    # if user in users and users[user] == hashlib.sha256(password.encode()).hexdigest():
+        cache.update(data)
+        cache.pop('user', None)
+        cache.pop('password', None)
         return jsonify({'message': 'Content set successfully.'})
     else:
-        return jsonify({'message': 'Invalid user or password.'})
+        return jsonify({'message': 'Invalid user or password.'}), 401
 
 @app.route('/music/get', methods=['GET'])
 def display_content():
-    global cache
-    # with open('cache.txt', 'r') as f:
-    #     cache = f.read()
     return jsonify(cache)
 
 if __name__ == '__main__':
