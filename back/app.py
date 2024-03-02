@@ -8,8 +8,6 @@ CORS(app, resources={r"/music/*": {"origins": "http://*"}})
 with open('.users', 'r') as file:
     users = json.load(file)
 
-print(users)
-
 @app.route('/music/set', methods=['POST'])
 def set_content():
     global cache
@@ -18,12 +16,17 @@ def set_content():
         for key in ['user', 'password']:
             if key in cache:
                 del cache[key]
+        # with open('cache.txt', 'w') as f:
+        #     f.write(str(cache))
         return jsonify({'message': 'Content set successfully.'})
     else:
         return jsonify({'message': 'Invalid user or password.'})
 
 @app.route('/music/get', methods=['GET'])
 def display_content():
+    global cache
+    # with open('cache.txt', 'r') as f:
+    #     cache = f.read()
     return jsonify(cache)
 
 if __name__ == '__main__':
