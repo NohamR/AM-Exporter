@@ -43,7 +43,7 @@ def post(currentsong):
     else :
         return r.text
 
-url = "http://127.0.0.1:5000"
+url = "http://192.168.1.58:3005"
 headers = {'Content-Type': 'application/json'}
 
 def main():
