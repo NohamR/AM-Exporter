@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
-#import hashlib
+import hashlib
 
 app = Flask(__name__)
 CORS(app, resources={r"/music/*": {"origins": "http://*"}})
@@ -16,12 +16,12 @@ def set_content():
     data = request.get_json()
     user = data.get('user')
     password = data.get('password')
-    if data['user'] in users and users[data['user']] == data['password']:
-    # if user in users and users[user] == hashlib.sha256(password.encode()).hexdigest():
+    if user in users and users[user] == hashlib.sha256(password.encode()).hexdigest():
+        # cache.clear()
         cache.update(data)
         cache.pop('user', None)
         cache.pop('password', None)
-        return jsonify({'message': 'Content set successfully.'})
+        return jsonify({'message': f'Content set successfully.'})
     else:
         return jsonify({'message': 'Invalid user or password.'}), 401
 

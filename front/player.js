@@ -4,7 +4,8 @@ function secondsToMinutesAndSeconds(seconds) {
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
 }
 function fetchDataAndAnimate() {
-    fetch('http://127.0.0.1:5000/music/get')
+    // fetch('http://192.168.1.58:3005/music/get')
+    fetch('http://192.168.1.64:3005/music/get')
         .then(response => response.json())
         .then(data => {
             const artist = data.artist;
@@ -15,9 +16,10 @@ function fetchDataAndAnimate() {
             const itunes_url = data.itunes_url;
             const name = data.name;
             const timestamp = parseFloat(data.timestamp);
-            const decalage = (Date.now()/1000 - timestamp);
-            let pPosition = Math.round(parseFloat(data.pPosition) + decalage-3);
+            const decalage = (Date.now() / 1000 - timestamp);
+            let pPosition = Math.round(parseFloat(data.pPosition) + decalage - 3);
             const duration = parseFloat(data.duration);
+            const status = data.status;
 
             const titleSongElement = document.querySelector('.title-song');
             // titleSongElement.textContent = name;
@@ -40,38 +42,55 @@ function fetchDataAndAnimate() {
                 element.href = itunes_url;
             });
 
-            const totaltimeElement = document.querySelector('.total-time');
-            totaltimeElement.textContent = time;
+            if (status === 'playing') {
+                const totaltimeElement = document.querySelector('.total-time');
+                totaltimeElement.textContent = time;
 
-            const lasttimeElement = document.querySelector('.last-time');
-            lasttimeElement.textContent = secondsToMinutesAndSeconds(pPosition);
-
-            const rapport = (pPosition / duration) * 100;
-            const trackElements = document.querySelectorAll('.track');
-            trackElements.forEach(element => {
-                const style = window.getComputedStyle(element, '::after');
-                const currentWidth = parseFloat(style.getPropertyValue('width'));
-                element.style.setProperty('--new-width', `${rapport.toFixed(2)}%`);
-            });
-
-            let intervalId;
-
-            function updateProgress() {
                 const lasttimeElement = document.querySelector('.last-time');
                 lasttimeElement.textContent = secondsToMinutesAndSeconds(pPosition);
+
                 const rapport = (pPosition / duration) * 100;
                 const trackElements = document.querySelectorAll('.track');
                 trackElements.forEach(element => {
+                    const style = window.getComputedStyle(element, '::after');
+                    const currentWidth = parseFloat(style.getPropertyValue('width'));
                     element.style.setProperty('--new-width', `${rapport.toFixed(2)}%`);
                 });
-                pPosition++;
-                if (pPosition > duration) {
-                    clearInterval(intervalId);
-                    fetchDataAndAnimate();
-                }
-            }
 
-            intervalId = setInterval(updateProgress, 1000);
+                let intervalId;
+
+                function updateProgress() {
+                    const lasttimeElement = document.querySelector('.last-time');
+                    lasttimeElement.textContent = secondsToMinutesAndSeconds(pPosition);
+                    const rapport = (pPosition / duration) * 100;
+                    const trackElements = document.querySelectorAll('.track');
+                    trackElements.forEach(element => {
+                        element.style.setProperty('--new-width', `${rapport.toFixed(2)}%`);
+                    });
+                    pPosition++;
+                    if (pPosition > duration) {
+                        clearInterval(intervalId);
+                        fetchDataAndAnimate();
+                    }
+                }
+
+                intervalId = setInterval(updateProgress, 1000);
+            }
+            else {
+                const totaltimeElement = document.querySelector('.total-time');
+                totaltimeElement.textContent = time;
+
+                const lasttimeElement = document.querySelector('.last-time');
+                lasttimeElement.textContent = time;
+
+                const rapport = (pPosition / duration) * 100;
+                const trackElements = document.querySelectorAll('.track');
+                trackElements.forEach(element => {
+                    const style = window.getComputedStyle(element, '::after');
+                    const currentWidth = parseFloat(style.getPropertyValue('width'));
+                    element.style.setProperty('--new-width', `100%`);
+                });
+            }
         })
         .catch(error => {
             console.error('Error fetching data:', error);
