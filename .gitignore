@@ -130,3 +130,6 @@ node_modules/
 
 back/.users
 user/.env
+user/cmd
+user/exemple.plist
+user/test2.applescript

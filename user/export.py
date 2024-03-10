@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 USER = os.getenv("USER")
 PASSWORD = os.getenv("PASSWORD")
+URL_API = os.getenv("URL_API")
 
 stdout_file = 'logfile.log'
 stderr_file = 'error_logfile.log'
@@ -57,17 +58,13 @@ def post(currentsong):
     currentsong['password'] = PASSWORD
     data = json.dumps(currentsong)
     try:
-        r = requests.post(url+'/music/set', data=data, headers=headers)
+        r = requests.post(URL_API+'/music/set', data=data, headers=headers)
         if r.status_code != 200:
             return r.status_code
         else :
             return r.text
     except Exception as e:
         print(f"An error occurred: {str(e)}", file=sys.stderr)
-
-url = "https://api.noh.am" #RUN WEB
-url = "http://127.0.0.1:5000" #DEV
-url = "http://0.0.0.0:3005"
 
 headers = {'Content-Type': 'application/json'}
 
