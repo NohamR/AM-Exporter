@@ -6,6 +6,8 @@ import json
 import requests
 from pprint import pprint
 import os
+from colorthief import ColorThief
+from io import BytesIO
 from dotenv import load_dotenv
 load_dotenv()
 USER = os.getenv("USER")
@@ -53,6 +55,13 @@ def get_track_extras(song, artist, album):
 
     return (artwork_url, itunes_url, artist_url)
 
+def get_dominant_color_from_url(url):
+    response = requests.get(url)
+    image = BytesIO(response.content)
+    color_thief = ColorThief(image)
+    dominant_color = color_thief.get_color(quality=1)
+    return dominant_color
+
 def post(currentsong):
     currentsong['user'] = USER
     currentsong['password'] = PASSWORD
@@ -81,6 +90,7 @@ def main():
                 persistendId = currentsong['persistent ID']
                 currentsong['timestamp'] = time.time()
                 (currentsong['artwork_url'], currentsong['itunes_url'], currentsong['artist_url']) = get_track_extras(currentsong['name'], currentsong['artist'], currentsong['album'])
+                currentsong['dominantcolor'] = get_dominant_color_from_url(currentsong['artwork_url'])
                 printout(f"{post(currentsong)}")
             timets = float(currentsong['duration'].replace(",", "."))-float(currentsong['pPosition'].replace(",", ".")) + 3
             prevstatus = 'playing'
