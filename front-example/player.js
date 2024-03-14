@@ -5,7 +5,7 @@ function secondsToMinutesAndSeconds(seconds) {
 }
 function fetchDataAndAnimate() {
     // fetch('http://192.168.1.58:3005/music/get')
-    fetch('http://192.168.1.64:3005/music/get')
+    fetch('https://api.noh.am/music/get')
         .then(response => response.json())
         .then(data => {
             const artist = data.artist;
@@ -20,6 +20,7 @@ function fetchDataAndAnimate() {
             let pPosition = Math.round(parseFloat(data.pPosition) + decalage - 3);
             const duration = parseFloat(data.duration);
             const status = data.status;
+            const dominantcolor = data.dominantcolor;
 
             const titleSongElement = document.querySelector('.title-song');
             // titleSongElement.textContent = name;
@@ -31,8 +32,12 @@ function fetchDataAndAnimate() {
             const artistSongElement = document.querySelector('.name-artist');
             artistSongElement.textContent = artist;
 
-            const artwork_urlElement = document.querySelector('.artwork_url');
-            artwork_urlElement.src = artwork_url;
+            const artworkElement = document.querySelector('.artwork_url');
+            artworkElement.src = artwork_url;
+
+            const playerDiv = document.querySelector('.player');
+            const colorString = 'rgb(' + dominantcolor.join(',') + ')';
+            playerDiv.style.backgroundColor = colorString;
 
             const artist_urlElement = document.querySelector('.artist-url');
             artist_urlElement.href = artist_url;
@@ -42,7 +47,7 @@ function fetchDataAndAnimate() {
                 element.href = itunes_url;
             });
 
-            if (status === 'playing') {
+            if (status === 'playing' && (pPosition / duration) * 100 <= 100) {
                 const totaltimeElement = document.querySelector('.total-time');
                 totaltimeElement.textContent = time;
 
