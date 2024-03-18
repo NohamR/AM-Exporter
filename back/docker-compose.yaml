@@ -1,4 +1,4 @@
-name: applemusicexporter
+name: amexporter
 services:
   app:
     cpu_shares: 90
@@ -11,7 +11,7 @@ services:
       - PGID=1000
       - PUID=1000
       - TZ=Europe/Paris
-    image: applemusicexporter
+    image: amexporter
     labels:
       icon: https://noh.am/static/assets/music.png
     ports:
@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
     # volumes:
       # - type: bind
-      #   source: /DATA/AppData/applemusicexporter
+      #   source: /DATA/AppData/amexporter
       #   target: /hard
     x-casaos:
       envs:
@@ -42,7 +42,7 @@ services:
     container_name: ""
 networks:
   default:
-    name: applemusicexporter
+    name: amexporter
 x-casaos:
   architectures:
     - amd64
@@ -55,9 +55,9 @@ x-casaos:
   main: app
   port_map: "3005"
   scheme: http
-  store_app_id: applemusicexporter
+  store_app_id: amexporter
   tagline:
-    en_us: applemusicexporter
+    en_us: amexporter
   title:
-    custom: applemusicexporter
-    en_us: applemusicexporter
+    custom: amexporter
+    en_us: amexporter
