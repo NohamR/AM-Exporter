@@ -2,7 +2,7 @@
 
 AppleMusicExporter est un projet conçu pour exporter les musiques depuis Apple Music en temps réel. AppleMusicExporter utilise [AppleScript](https://developer.apple.com/library/archive/documentation/AppleScript/Conceptual/AppleScriptLangGuide/introduction/ASLR_intro.html) pour les interactions avec Apple Music.
 
-![music player](Music-Player.gif)
+![music player](front-example/screen.png)
 ![diagramme](Diagramme.drawio.png)
 
 ## Dépendances :
@@ -41,12 +41,15 @@ git clone https://github.com/NohamR/AM-Exporter.git
 cd user
 python install -r requirements.txt
 ```
+Créer le fichier .env avec l'utilisateur et son mot de passe ([.env.example](user/.env.example)).
+
 Configuer [music-exp.plist](user/music-exp.plist) sur l'exemple de [music-exp.plist.example](user/music-exp.plist.example) :
 PYTHON_PATH
 WORKING_DIRECTORY
 ```bash
 ./install.sh
 ```
+![notif.png](notif.png)
 
 Logs can but found in the working direcrtory :
 ```bash
@@ -66,5 +69,4 @@ cd user
 ```
 
 # To do :
-- make script proper
 - comment

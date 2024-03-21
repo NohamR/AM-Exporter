@@ -6,4 +6,10 @@ cp -f music-exp.plist ~/Library/LaunchAgents/
 
 echo --- Load launch agent
 launchctl load ~/Library/LaunchAgents/music-exp.plist
-echo --- INSTALL SUCCESS
+
+if launchctl list | grep am.noh.music-exp; then
+    echo "--- Agent successfully loaded"
+    echo "--- INSTALL SUCCESS"
+else
+    echo "--- ERROR: Agent failed to load"
+fi
