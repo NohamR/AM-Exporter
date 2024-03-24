@@ -2,7 +2,8 @@
 
 AppleMusicExporter est un projet conçu pour exporter les musiques depuis Apple Music en temps réel. AppleMusicExporter utilise [AppleScript](https://developer.apple.com/library/archive/documentation/AppleScript/Conceptual/AppleScriptLangGuide/introduction/ASLR_intro.html) pour les interactions avec Apple Music.
 
-![music player](front-example/screen.png)
+<!-- ![music player](front-example/screen.png) -->
+<img src="front/screen.png" width="200" height="200" />
 ![diagramme](Diagramme.drawio.png)
 
 ## Dépendances :
