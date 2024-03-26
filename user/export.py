@@ -90,7 +90,10 @@ def main():
                 persistendId = currentsong['persistent ID']
                 currentsong['timestamp'] = time.time()
                 (currentsong['artwork_url'], currentsong['itunes_url'], currentsong['artist_url']) = get_track_extras(currentsong['name'], currentsong['artist'], currentsong['album'])
-                currentsong['dominantcolor'] = get_dominant_color_from_url(currentsong['artwork_url'])
+                try:
+                    currentsong['dominantcolor'] = get_dominant_color_from_url(currentsong['artwork_url'])
+                except:
+                    currentsong['dominantcolor'] = [0,0,0]
                 printout(f"{post(currentsong)}")
             timets = float(currentsong['duration'].replace(",", "."))-float(currentsong['pPosition'].replace(",", ".")) + 3
             prevstatus = 'playing'
