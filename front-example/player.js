@@ -3,8 +3,19 @@ function secondsToMinutesAndSeconds(seconds) {
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
 }
+
+function textColorOnBackground(rgb) {
+    var r = rgb[0] / 255;
+    var g = rgb[1] / 255;
+    var b = rgb[2] / 255;
+    if (0.2126 * r + 0.7152 * g + 0.0722 * b > 0.5) {
+        return 'black';
+    } else {
+        return 'white';
+    }
+}
+
 function fetchDataAndAnimate() {
-    // fetch('http://192.168.1.58:3005/music/get')
     fetch('https://api.noh.am/music/get')
         .then(response => response.json())
         .then(data => {
@@ -21,16 +32,25 @@ function fetchDataAndAnimate() {
             const duration = parseFloat(data.duration);
             const status = data.status;
             const dominantcolor = data.dominantcolor;
+            const textColor = textColorOnBackground(dominantcolor);
+            
+            const lastTime = document.querySelector('.last-time');
+            lastTime.style.color = textColor;
+            const totalTime = document.querySelector('.total-time');
+            totalTime.style.color = textColor;
 
             const titleSongElement = document.querySelector('.title-song');
             // titleSongElement.textContent = name;
             titleSongElement.textContent = `${name} - `
+            titleSongElement.style.color = textColor;
 
             const titleAlbumElement = document.querySelector('.title-album');
             titleAlbumElement.textContent = album;
+            titleAlbumElement.style.color = textColor;
 
             const artistSongElement = document.querySelector('.name-artist');
             artistSongElement.textContent = artist;
+            artistSongElement.style.color = textColor;
 
             const artworkElement = document.querySelector('.artwork_url');
             artworkElement.src = artwork_url;
@@ -60,6 +80,7 @@ function fetchDataAndAnimate() {
                     const style = window.getComputedStyle(element, '::after');
                     const currentWidth = parseFloat(style.getPropertyValue('width'));
                     element.style.setProperty('--new-width', `${rapport.toFixed(2)}%`);
+                    element.style.setProperty('--new-color', textColor);
                 });
 
                 let intervalId;
@@ -71,6 +92,7 @@ function fetchDataAndAnimate() {
                     const trackElements = document.querySelectorAll('.track');
                     trackElements.forEach(element => {
                         element.style.setProperty('--new-width', `${rapport.toFixed(2)}%`);
+                        element.style.setProperty('--new-color', textColor);
                     });
                     pPosition++;
                     if (pPosition > duration) {
@@ -94,6 +116,7 @@ function fetchDataAndAnimate() {
                     const style = window.getComputedStyle(element, '::after');
                     const currentWidth = parseFloat(style.getPropertyValue('width'));
                     element.style.setProperty('--new-width', `100%`);
+                    element.style.setProperty('--new-color', textColor);
                 });
             }
         })
