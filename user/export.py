@@ -49,7 +49,7 @@ def get_track_extras(song, artist, album):
     else :
         result = ''
 
-    artwork_url = result["artworkUrl100"] if result else None
+    artwork_url = result["artworkUrl100"].replace('100x100bb.jpg', '200x200bb.jpg') if result else None
     itunes_url = result["trackViewUrl"] if result else None
     artist_url = result["artistViewUrl"] if result else None
 
