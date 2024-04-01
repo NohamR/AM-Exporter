@@ -16,7 +16,7 @@ function textColorOnBackground(rgb) {
 }
 
 function fetchDataAndAnimate() {
-    fetch('https://api.noh.am/music/get')
+    fetch('https://api.noh.am/music/get') // récupère les données depuis l'API
         .then(response => response.json())
         .then(data => {
             const artist = data.artist;
@@ -40,7 +40,6 @@ function fetchDataAndAnimate() {
             totalTime.style.color = textColor;
 
             const titleSongElement = document.querySelector('.title-song');
-            // titleSongElement.textContent = name;
             titleSongElement.textContent = `${name} - `
             titleSongElement.style.color = textColor;
 
@@ -67,7 +66,7 @@ function fetchDataAndAnimate() {
                 element.href = itunes_url;
             });
 
-            if (status === 'playing' && (pPosition / duration) * 100 <= 100) {
+            if (status === 'playing' && (pPosition / duration) * 100 <= 100) { // actualise une première fois
                 const totaltimeElement = document.querySelector('.total-time');
                 totaltimeElement.textContent = time;
 
@@ -101,9 +100,9 @@ function fetchDataAndAnimate() {
                     }
                 }
 
-                intervalId = setInterval(updateProgress, 1000);
+                intervalId = setInterval(updateProgress, 1000); // actualise le compteur toutes les secondes
             }
-            else {
+            else { // si le lecteur ne joue rien alors il affiche la dernière musique jouée
                 const totaltimeElement = document.querySelector('.total-time');
                 totaltimeElement.textContent = time;
 

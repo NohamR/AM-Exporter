@@ -8,7 +8,6 @@
     <string>am.noh.music-exp</string>
     <key>ProgramArguments</key>
     <array>
-        <!-- <string>/usr/bin/python3</string> -->
         <string>/Users/noham/miniconda3/envs/310/bin/python</string>
         <string>export.py</string>
     </array>
@@ -19,6 +18,6 @@
     <key>StandardErrorPath</key>
     <string>error_logfile.log</string>
     <key>WorkingDirectory</key>
-	<string>/Users/noham/Documents/GitHub/AppleMusicApi/user</string>
+	<string>/Users/noham/Documents/GitHub/AM-Exporter/user</string>
 </dict>
 </plist>
