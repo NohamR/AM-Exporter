@@ -19,10 +19,6 @@ services:
         published: "3005"
         protocol: tcp
     restart: unless-stopped
-    # volumes:
-      # - type: bind
-      #   source: /DATA/AppData/amexporter
-      #   target: /hard
     x-casaos:
       envs:
         - container: PUID
