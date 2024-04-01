@@ -4,7 +4,7 @@ import json
 import hashlib
 
 app = Flask(__name__)
-CORS(app, resources={r"/music/*": {"origins": "http://*"}})
+CORS(app, resources={r"/music/*": {"origins": "https://noh.am"}})
 
 with open('.users', 'r') as file:
     users = json.load(file)
