@@ -66,7 +66,7 @@ Un exemple d'implémentation de l'api est disponible dans [front-example](front-
 ## Uninstall :
 ```bash
 cd user
-./unistall.sh
+./uninstall.sh
 ```
 
 # To do :
