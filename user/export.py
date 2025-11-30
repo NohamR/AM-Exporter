@@ -42,6 +42,17 @@ def get_track_extras(song, artist, album):
     
     r = requests.get("https://itunes.apple.com/search", params=params)
     json_data =  r.json()
+    if json_data["resultCount"] == 0:
+        query = f"{song} {artist}"
+        params = {"media": "music", "entity": "song", "term": query}
+        r = requests.get("https://itunes.apple.com/search", params=params)
+        json_data =  r.json()
+        if json_data["resultCount"] == 0:
+            query = f"{song} {album}"
+            params = {"media": "music", "entity": "song", "term": query}
+            r = requests.get("https://itunes.apple.com/search", params=params)
+            json_data =  r.json()
+
     if json_data["resultCount"] == 1:
         result = json_data["results"][0]
     elif json_data["resultCount"] > 1:
